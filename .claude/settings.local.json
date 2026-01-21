@@ -21,7 +21,8 @@
       "Bash(git remote remove:*)",
       "Bash(vercel whoami:*)",
       "Bash(vercel:*)",
-      "WebFetch(domain:www.understood.org)"
+      "WebFetch(domain:www.understood.org)",
+      "Bash(npm uninstall:*)"
     ]
   }
 }
