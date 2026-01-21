@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { AlertCircle, Download, Share2, FileDown, CheckCircle2 } from 'lucide-react'
+import { AlertCircle, Download, Share2, FileDown, CheckCircle2, User, Lock } from 'lucide-react'
 import {
   exportToCSV,
   downloadCSV,
@@ -126,14 +126,14 @@ export default function ExportPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="container mx-auto px-6 py-8 max-w-6xl">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold flex items-center gap-3">
-          <FileDown className="h-8 w-8" />
+        <h1 className="flex items-center gap-3 mb-2">
+          <FileDown className="h-8 w-8 text-primary" />
           Export Data
         </h1>
-        <p className="text-muted-foreground mt-2 flex items-center gap-2">
-          <span>{selectedChild.animalEmoji}</span>
+        <p className="text-muted-foreground flex items-center gap-2">
+          <User className="w-4 h-4" />
           Export behavior data for {selectedChild.animalName}
         </p>
       </div>
@@ -349,8 +349,9 @@ export default function ExportPage() {
                 All data is generated locally in your browser. Nothing is sent to external
                 servers.
               </p>
-              <p className="font-medium text-foreground">
-                ⚠️ Please handle exported files according to HIPAA and privacy guidelines.
+              <p className="font-medium text-foreground flex items-start gap-2">
+                <Lock className="w-4 h-4 mt-0.5 flex-shrink-0 text-primary" />
+                Please handle exported files according to HIPAA and privacy guidelines.
               </p>
             </CardContent>
           </Card>

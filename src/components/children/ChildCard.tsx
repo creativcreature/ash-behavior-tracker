@@ -3,7 +3,7 @@
 import type { Child } from '@/types/child'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Archive, ArchiveRestore, Eye } from 'lucide-react'
+import { Archive, ArchiveRestore, Eye, User } from 'lucide-react'
 
 interface ChildCardProps {
   child: Child
@@ -33,9 +33,9 @@ export function ChildCard({
     >
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <div className="flex items-center gap-3">
-          <span className="text-4xl" role="img" aria-label={child.animalName}>
-            {child.animalEmoji}
-          </span>
+          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+            <User className="w-6 h-6 text-primary" />
+          </div>
           <div>
             <h3 className="text-lg font-semibold">{child.animalName}</h3>
             {child.ageRange && (

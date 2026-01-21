@@ -47,13 +47,12 @@ export const useChildrenStore = create<ChildrenState>()(
       createChild: async (input: CreateChildInput) => {
         set({ isLoading: true, error: null })
         try {
-          const { name, emoji } = await generateAnimalName()
+          const name = await generateAnimalName()
           const now = new Date().toISOString()
 
           const child: Child = {
             id: crypto.randomUUID(),
             animalName: name,
-            animalEmoji: emoji,
             ...input,
             createdAt: now,
             updatedAt: now,

@@ -65,7 +65,7 @@ export async function initializeBehaviorTemplates() {
           'Removed from situation',
           'Provided alternative communication',
         ],
-        icon: '👊',
+        icon: 'zap',
       },
       {
         id: 'self-injury',
@@ -85,7 +85,7 @@ export async function initializeBehaviorTemplates() {
           'Assessed for pain/discomfort',
           'Provided reassurance',
         ],
-        icon: '✋',
+        icon: 'hand',
       },
       {
         id: 'elopement',
@@ -105,7 +105,7 @@ export async function initializeBehaviorTemplates() {
           'Increased supervision',
           'Discussed safety',
         ],
-        icon: '🏃',
+        icon: 'move',
       },
       {
         id: 'property-destruction',
@@ -125,7 +125,7 @@ export async function initializeBehaviorTemplates() {
           'Loss of privilege',
           'Discussed consequences',
         ],
-        icon: '💥',
+        icon: 'alert-octagon',
       },
       {
         id: 'tantrum-meltdown',
@@ -145,7 +145,7 @@ export async function initializeBehaviorTemplates() {
           'Offered comfort item',
           'Maintained safety',
         ],
-        icon: '😭',
+        icon: 'frown',
       },
     ]
 

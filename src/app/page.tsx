@@ -6,18 +6,20 @@ import { useChildrenStore } from '@/store/childrenStore'
 import { useBehaviorsStore } from '@/store/behaviorsStore'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { PrivacyBadge, PrivacyFeatureGrid } from '@/components/ui/privacy-badge'
 import {
+  Shield,
+  Lock,
+  BarChart3,
+  FileText,
+  Clock,
   Users,
-  ClipboardList,
   TrendingUp,
   Calendar,
-  Plus,
-  BarChart3,
-  Shield,
-  Sparkles,
+  Activity,
+  CheckCircle2,
   ArrowRight,
-  Heart,
+  Eye,
+  Download,
 } from 'lucide-react'
 import { format, subDays, startOfDay, endOfDay } from 'date-fns'
 
@@ -34,16 +36,9 @@ export default function Home() {
   const activeChildren = children.filter((c) => !c.archivedAt)
   const selectedChild = children.find((c) => c.id === selectedChildId)
 
-  // Calculate statistics for selected child
   const stats = useMemo(() => {
     if (!selectedChildId) {
-      return {
-        total: 0,
-        today: 0,
-        last7Days: 0,
-        avgPerDay: 0,
-        mostCommonType: null,
-      }
+      return { total: 0, today: 0, last7Days: 0, avgPerDay: 0, mostCommonType: null }
     }
 
     const childIncidents = incidents.filter((i) => i.childId === selectedChildId)
@@ -55,7 +50,6 @@ export default function Home() {
     const todayIncidents = childIncidents.filter(
       (i) => new Date(i.timestamp) >= todayStart && new Date(i.timestamp) <= todayEnd
     )
-
     const last7DaysIncidents = childIncidents.filter(
       (i) => new Date(i.timestamp) >= sevenDaysAgo
     )
@@ -80,46 +74,46 @@ export default function Home() {
 
   const recentIncidents = useMemo(() => {
     if (!selectedChildId) return []
-    return incidents
-      .filter((i) => i.childId === selectedChildId)
-      .slice(0, 5)
+    return incidents.filter((i) => i.childId === selectedChildId).slice(0, 5)
   }, [selectedChildId, incidents])
 
-  // First-time user experience
+  // First-time landing page
   if (activeChildren.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-background via-primary/5 to-background">
-        <div className="container mx-auto px-4 py-12 max-w-6xl">
-          {/* Hero Section */}
-          <div className="text-center space-y-6 mb-16 animate-slide-up">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-              <Shield className="w-4 h-4" />
+      <div className="min-h-screen">
+        <div className="container mx-auto px-6 py-16 max-w-7xl">
+          {/* Hero */}
+          <div className="max-w-4xl mx-auto text-center mb-24">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/5 border border-primary/10 text-sm font-medium mb-8">
+              <Shield className="w-4 h-4 text-primary" />
               <span>Privacy-First Behavior Tracking</span>
             </div>
 
-            <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-              Understand Behavior,
-              <br />
-              <span className="text-primary">Protect Privacy</span>
+            <h1 className="mb-6">
+              Professional Behavior Analysis
             </h1>
 
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              A compassionate tool for parents, teachers, and therapists tracking behavior
-              patterns for children with autism and developmental delays.
+            <p className="text-xl text-muted-foreground mb-10 leading-relaxed">
+              Clinical-grade behavior tracking for children with autism and developmental delays.
+              <br />
+              Trusted by parents, therapists, and BCBAs.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-              <Button size="lg" onClick={() => router.push('/children')} className="gap-2 shadow-elevated">
-                <Plus className="w-5 h-5" />
-                Create Your First Profile
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button
+                size="lg"
+                onClick={() => router.push('/children')}
+                className="gap-2 px-8"
+              >
+                Get Started
                 <ArrowRight className="w-4 h-4" />
               </Button>
               <Button
                 size="lg"
                 variant="outline"
                 onClick={() => {
-                  const element = document.getElementById('features')
-                  element?.scrollIntoView({ behavior: 'smooth' })
+                  const el = document.getElementById('features')
+                  el?.scrollIntoView({ behavior: 'smooth' })
                 }}
               >
                 Learn More
@@ -128,129 +122,128 @@ export default function Home() {
           </div>
 
           {/* Privacy Banner */}
-          <div className="mb-16 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-            <PrivacyBadge variant="banner" />
+          <div className="max-w-5xl mx-auto mb-24">
+            <div className="bg-accent-light/30 border border-accent/20 rounded-lg p-8">
+              <div className="flex items-start gap-6">
+                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
+                  <Lock className="w-6 h-6 text-accent" />
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-2">Your Data Stays Private</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    All behavior data is stored locally on your device. No cloud storage, no accounts, no tracking.
+                    You maintain complete control over your information.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Features Grid */}
-          <div id="features" className="mb-16 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-            <h2 className="text-3xl font-bold text-center mb-4">Why Families Trust Ash</h2>
-            <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-              Designed with privacy, accessibility, and compassion at its core
-            </p>
+          {/* Features */}
+          <div id="features" className="mb-24">
+            <div className="text-center mb-16">
+              <h2 className="mb-4">Comprehensive Behavior Insights</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Everything you need for professional behavior analysis
+              </p>
+            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <Card className="border-2 hover:border-primary/50 hover:shadow-elevated transition-all">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                    <ClipboardList className="w-6 h-6 text-primary" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <Card className="border-2 transition-premium hover:shadow-premium-hover">
+                <CardHeader className="pb-4">
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                    <Clock className="w-6 h-6 text-primary" />
                   </div>
-                  <CardTitle>Fast & Simple</CardTitle>
+                  <CardTitle className="text-lg">Quick Logging</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">
-                    Log behaviors in 3-5 seconds with Quick Mode, or use Full ABC Mode for
-                    detailed analysis.
+                  <p className="text-muted-foreground leading-relaxed">
+                    Record behaviors in under 5 seconds with Quick Mode, or capture detailed ABC data when needed.
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="border-2 hover:border-primary/50 hover:shadow-elevated transition-all">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                    <Shield className="w-6 h-6 text-primary" />
+              <Card className="border-2 transition-premium hover:shadow-premium-hover">
+                <CardHeader className="pb-4">
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                    <BarChart3 className="w-6 h-6 text-primary" />
                   </div>
-                  <CardTitle>100% Private</CardTitle>
+                  <CardTitle className="text-lg">Visual Analytics</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">
-                    All data stays on your device. No cloud, no accounts, no tracking. You own
-                    your information.
+                  <p className="text-muted-foreground leading-relaxed">
+                    Interactive charts reveal patterns over time. Identify triggers and track progress with clarity.
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="border-2 hover:border-primary/50 hover:shadow-elevated transition-all">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                    <Users className="w-6 h-6 text-primary" />
+              <Card className="border-2 transition-premium hover:shadow-premium-hover">
+                <CardHeader className="pb-4">
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                    <FileText className="w-6 h-6 text-primary" />
                   </div>
-                  <CardTitle>Playful Anonymity</CardTitle>
+                  <CardTitle className="text-lg">Professional Reports</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">
-                    Children get fun animal names like "Brave Panda" to protect their identity
-                    automatically.
+                  <p className="text-muted-foreground leading-relaxed">
+                    Export CSV reports compatible with Excel and professional behavior analysis software.
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="border-2 hover:border-primary/50 hover:shadow-elevated transition-all">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mb-4">
-                    <BarChart3 className="w-6 h-6 text-accent" />
+              <Card className="border-2 transition-premium hover:shadow-premium-hover">
+                <CardHeader className="pb-4">
+                  <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
+                    <Shield className="w-6 h-6 text-accent" />
                   </div>
-                  <CardTitle>Visual Insights</CardTitle>
+                  <CardTitle className="text-lg">Local Storage Only</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">
-                    Beautiful charts reveal patterns over time. Identify triggers and track
-                    progress with ease.
+                  <p className="text-muted-foreground leading-relaxed">
+                    All data remains on your device. No cloud, no servers, no third parties. Complete privacy.
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="border-2 hover:border-primary/50 hover:shadow-elevated transition-all">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mb-4">
-                    <Heart className="w-6 h-6 text-accent" />
+              <Card className="border-2 transition-premium hover:shadow-premium-hover">
+                <CardHeader className="pb-4">
+                  <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
+                    <Eye className="w-6 h-6 text-accent" />
                   </div>
-                  <CardTitle>BCBA Ready</CardTitle>
+                  <CardTitle className="text-lg">Anonymous by Design</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">
-                    Professional CSV exports compatible with Excel and behavior analysis
-                    software.
+                  <p className="text-muted-foreground leading-relaxed">
+                    Profiles use playful code names for automatic identity protection in all exports.
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="border-2 hover:border-primary/50 hover:shadow-elevated transition-all">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mb-4">
-                    <Sparkles className="w-6 h-6 text-accent" />
+              <Card className="border-2 transition-premium hover:shadow-premium-hover">
+                <CardHeader className="pb-4">
+                  <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
+                    <CheckCircle2 className="w-6 h-6 text-accent" />
                   </div>
-                  <CardTitle>Accessible</CardTitle>
+                  <CardTitle className="text-lg">Fully Accessible</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">
-                    WCAG AA compliant. Full keyboard navigation and screen reader support for
-                    everyone.
+                  <p className="text-muted-foreground leading-relaxed">
+                    WCAG AA compliant with keyboard navigation and screen reader support throughout.
                   </p>
                 </CardContent>
               </Card>
             </div>
           </div>
 
-          {/* Privacy Features */}
-          <div className="animate-slide-up" style={{ animationDelay: '0.3s' }}>
-            <h2 className="text-3xl font-bold text-center mb-12">
-              Your Privacy is Our Priority
-            </h2>
-            <PrivacyFeatureGrid />
-          </div>
-
           {/* CTA */}
-          <div className="text-center mt-16 animate-slide-up" style={{ animationDelay: '0.4s' }}>
-            <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-accent/10 border border-primary/20 rounded-2xl p-8 md:p-12">
-              <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
-              <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
-                Create your first child profile and start tracking behaviors in under a minute.
-                No registration required.
+          <div className="max-w-3xl mx-auto text-center">
+            <div className="bg-secondary/50 border border-border rounded-lg p-12">
+              <h2 className="mb-4">Start Tracking Today</h2>
+              <p className="text-muted-foreground mb-8 leading-relaxed">
+                Create your first profile in under a minute. No registration required.
               </p>
-              <Button size="lg" onClick={() => router.push('/children')} className="gap-2 shadow-elevated">
-                <Plus className="w-5 h-5" />
-                Create First Profile
+              <Button size="lg" onClick={() => router.push('/children')} className="gap-2 px-8">
+                Create Profile
                 <ArrowRight className="w-4 h-4" />
               </Button>
             </div>
@@ -260,46 +253,43 @@ export default function Home() {
     )
   }
 
+  // Dashboard for existing users
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
-      <div className="flex items-center justify-between mb-8 animate-slide-up">
+    <div className="container mx-auto px-6 py-8 max-w-7xl">
+      <div className="flex items-center justify-between mb-10">
         <div>
           <h1 className="mb-2">Dashboard</h1>
           {selectedChild && (
-            <p className="text-muted-foreground flex items-center gap-2">
-              <span>{selectedChild.animalEmoji}</span>
-              Tracking for {selectedChild.animalName}
+            <p className="text-muted-foreground">
+              Tracking: {selectedChild.animalName}
             </p>
           )}
         </div>
-        <div className="flex gap-3">
-          <PrivacyBadge variant="minimal" />
-          <Button size="lg" onClick={() => router.push('/track')} className="gap-2 shadow-soft">
-            <ClipboardList className="h-5 w-5" />
-            Log Behavior
-          </Button>
-        </div>
+        <Button onClick={() => router.push('/track')} className="gap-2">
+          <Activity className="h-4 w-4" />
+          Log Behavior
+        </Button>
       </div>
 
       {!selectedChildId ? (
-        <div className="text-center py-12 bg-gradient-to-br from-muted/30 to-muted/10 rounded-2xl animate-slide-up">
-          <Users className="h-16 w-16 mx-auto text-primary mb-4" />
-          <h2 className="text-2xl font-semibold mb-2">Select a Profile</h2>
-          <p className="text-muted-foreground mb-8">
-            Choose a profile below to view their behavior data
+        <div className="text-center py-20 bg-secondary/30 rounded-lg">
+          <Users className="h-16 w-16 mx-auto text-muted-foreground mb-6" />
+          <h2 className="mb-2">Select a Profile</h2>
+          <p className="text-muted-foreground mb-10">
+            Choose a profile to view behavior data
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto mt-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
             {activeChildren.map((child) => (
               <Card
                 key={child.id}
-                className="cursor-pointer hover:shadow-elevated hover:border-primary/50 transition-all"
+                className="cursor-pointer border-2 transition-premium hover:shadow-premium-hover hover:border-primary/30"
                 onClick={() => selectChild(child.id)}
               >
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-3">
-                    <span className="text-4xl">{child.animalEmoji}</span>
-                    <span>{child.animalName}</span>
-                  </CardTitle>
+                <CardHeader className="pb-2">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+                    <Users className="w-6 h-6 text-primary" />
+                  </div>
+                  <CardTitle>{child.animalName}</CardTitle>
                 </CardHeader>
               </Card>
             ))}
@@ -307,66 +297,60 @@ export default function Home() {
         </div>
       ) : (
         <div className="space-y-8">
-          {/* Quick Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 animate-slide-up">
-            <Card className="border-2 hover:shadow-soft transition-smooth">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          {/* Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card className="border-2">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
-                  Total Behaviors
+                  Total Logged
                 </CardTitle>
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                  <ClipboardList className="h-5 w-5 text-primary" />
-                </div>
+                <Activity className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">{stats.total}</div>
+                <div className="text-3xl font-semibold">{stats.total}</div>
                 <p className="text-xs text-muted-foreground mt-1">All time</p>
               </CardContent>
             </Card>
 
-            <Card className="border-2 hover:shadow-soft transition-smooth">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Today</CardTitle>
-                <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center">
-                  <Calendar className="h-5 w-5 text-accent" />
-                </div>
+            <Card className="border-2">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Today
+                </CardTitle>
+                <Calendar className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">{stats.today}</div>
+                <div className="text-3xl font-semibold">{stats.today}</div>
                 <p className="text-xs text-muted-foreground mt-1">
-                  {format(new Date(), 'MMM d, yyyy')}
+                  {format(new Date(), 'MMM d')}
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="border-2 hover:shadow-soft transition-smooth">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <Card className="border-2">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
                   Last 7 Days
                 </CardTitle>
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                  <TrendingUp className="h-5 w-5 text-primary" />
-                </div>
+                <TrendingUp className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">{stats.last7Days}</div>
+                <div className="text-3xl font-semibold">{stats.last7Days}</div>
                 <p className="text-xs text-muted-foreground mt-1">
-                  {stats.avgPerDay.toFixed(1)} per day average
+                  {stats.avgPerDay.toFixed(1)} avg/day
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="border-2 hover:shadow-soft transition-smooth">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <Card className="border-2">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
                   Most Common
                 </CardTitle>
-                <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center">
-                  <BarChart3 className="h-5 w-5 text-accent" />
-                </div>
+                <BarChart3 className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold capitalize">
+                <div className="text-lg font-semibold capitalize">
                   {stats.mostCommonType?.replace('-', ' ') || 'N/A'}
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">Behavior type</p>
@@ -374,72 +358,38 @@ export default function Home() {
             </Card>
           </div>
 
-          {/* Recent Behaviors */}
-          <Card className="border-2 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+          {/* Recent */}
+          <Card className="border-2">
             <CardHeader>
-              <CardTitle>Recent Behavior Logs</CardTitle>
+              <CardTitle>Recent Activity</CardTitle>
             </CardHeader>
             <CardContent>
               {recentIncidents.length === 0 ? (
                 <div className="text-center py-12 text-muted-foreground">
-                  <ClipboardList className="h-12 w-12 mx-auto mb-3 opacity-50" />
+                  <Activity className="h-12 w-12 mx-auto mb-4 opacity-50" />
                   <p className="mb-4">No behaviors logged yet</p>
-                  <Button
-                    variant="outline"
-                    onClick={() => router.push('/track')}
-                    className="gap-2"
-                  >
-                    <Plus className="h-4 w-4" />
-                    Log your first behavior
+                  <Button variant="outline" onClick={() => router.push('/track')}>
+                    Log First Behavior
                   </Button>
                 </div>
               ) : (
                 <div className="space-y-4">
                   {recentIncidents.map((incident) => (
-                    <div
-                      key={incident.id}
-                      className="flex items-start gap-4 pb-4 border-b last:border-0 hover:bg-muted/30 -mx-2 px-2 py-2 rounded-lg transition-colors"
-                    >
-                      <div className="text-3xl">{getTypeIcon(incident.behaviorType)}</div>
-                      <div className="flex-1">
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <p className="font-semibold capitalize">
-                              {incident.behaviorType.replace('-', ' ')}
-                            </p>
-                            <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
-                              {incident.behavior}
-                            </p>
-                          </div>
-                          <time className="text-sm text-muted-foreground whitespace-nowrap ml-4">
-                            {format(new Date(incident.timestamp), 'MMM d, h:mm a')}
-                          </time>
-                        </div>
-                        {incident.intensity && (
-                          <div className="flex items-center gap-1 mt-2">
-                            {Array.from({ length: 5 }).map((_, i) => (
-                              <div
-                                key={i}
-                                className={`w-2 h-2 rounded-full ${
-                                  i < incident.intensity!
-                                    ? 'bg-accent'
-                                    : 'bg-muted'
-                                }`}
-                              />
-                            ))}
-                            <span className="text-xs text-muted-foreground ml-1">
-                              Intensity {incident.intensity}/5
-                            </span>
-                          </div>
-                        )}
+                    <div key={incident.id} className="flex items-start justify-between py-3 border-b last:border-0">
+                      <div>
+                        <p className="font-medium capitalize">
+                          {incident.behaviorType.replace('-', ' ')}
+                        </p>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          {incident.behavior}
+                        </p>
                       </div>
+                      <time className="text-sm text-muted-foreground">
+                        {format(new Date(incident.timestamp), 'MMM d, h:mm a')}
+                      </time>
                     </div>
                   ))}
-                  <Button
-                    variant="outline"
-                    className="w-full mt-2"
-                    onClick={() => router.push('/insights')}
-                  >
+                  <Button variant="outline" className="w-full" onClick={() => router.push('/insights')}>
                     View All Insights
                     <ArrowRight className="h-4 w-4 ml-2" />
                   </Button>
@@ -449,41 +399,35 @@ export default function Home() {
           </Card>
 
           {/* Quick Actions */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Button
               variant="outline"
-              className="h-auto py-6 hover:shadow-soft transition-all hover:border-primary/50"
+              className="h-32 border-2 transition-premium hover:shadow-premium"
               onClick={() => router.push('/track')}
             >
               <div className="flex flex-col items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <ClipboardList className="h-6 w-6 text-primary" />
-                </div>
+                <Activity className="h-6 w-6" />
                 <span className="font-semibold">Log Behavior</span>
               </div>
             </Button>
             <Button
               variant="outline"
-              className="h-auto py-6 hover:shadow-soft transition-all hover:border-accent/50"
+              className="h-32 border-2 transition-premium hover:shadow-premium"
               onClick={() => router.push('/insights')}
             >
               <div className="flex flex-col items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
-                  <BarChart3 className="h-6 w-6 text-accent" />
-                </div>
+                <BarChart3 className="h-6 w-6" />
                 <span className="font-semibold">View Insights</span>
               </div>
             </Button>
             <Button
               variant="outline"
-              className="h-auto py-6 hover:shadow-soft transition-all hover:border-primary/50"
-              onClick={() => router.push('/children')}
+              className="h-32 border-2 transition-premium hover:shadow-premium"
+              onClick={() => router.push('/export')}
             >
               <div className="flex flex-col items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Users className="h-6 w-6 text-primary" />
-                </div>
-                <span className="font-semibold">Manage Profiles</span>
+                <Download className="h-6 w-6" />
+                <span className="font-semibold">Export Data</span>
               </div>
             </Button>
           </div>
@@ -491,16 +435,4 @@ export default function Home() {
       )}
     </div>
   )
-}
-
-function getTypeIcon(type: string): string {
-  const icons: Record<string, string> = {
-    aggression: '👊',
-    'self-injury': '✋',
-    elopement: '🏃',
-    'property-destruction': '💥',
-    'tantrum-meltdown': '😭',
-    other: '📝',
-  }
-  return icons[type] || '📝'
 }

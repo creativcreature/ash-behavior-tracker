@@ -22,6 +22,7 @@ import {
   Calendar,
   TrendingUp,
   TrendingDown,
+  User,
 } from 'lucide-react'
 import { subDays } from 'date-fns'
 
@@ -133,7 +134,7 @@ export default function InsightsPage() {
             Behavior Insights
           </h1>
           <p className="text-muted-foreground mt-2 flex items-center gap-2">
-            <span>{selectedChild.animalEmoji}</span>
+            <User className="w-4 h-4" />
             Analysis for {selectedChild.animalName}
           </p>
         </div>

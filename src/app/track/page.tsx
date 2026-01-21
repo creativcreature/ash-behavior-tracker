@@ -8,7 +8,7 @@ import { ABCEntryForm } from '@/components/tracking/ABCEntryForm'
 import { Celebration } from '@/components/ui/celebration'
 import { PrivacyBadge } from '@/components/ui/privacy-badge'
 import type { BehaviorType } from '@/types/behavior'
-import { AlertCircle, ClipboardList, Shield } from 'lucide-react'
+import { AlertCircle, ClipboardList, Shield, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export default function TrackPage() {
@@ -70,7 +70,7 @@ export default function TrackPage() {
                 <p className="text-muted-foreground flex items-center gap-2">
                   Tracking for
                   <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary font-medium">
-                    <span>{selectedChild.animalEmoji}</span>
+                    <User className="w-4 h-4" />
                     {selectedChild.animalName}
                   </span>
                 </p>
