@@ -102,7 +102,7 @@ export const useBehaviorsStore = create<BehaviorsState>((set, get) => ({
   updateIncident: async (id: string, input: UpdateBehaviorInput) => {
     set({ isLoading: true, error: null })
     try {
-      await db.incidents.update(id, input)
+      await db.incidents.update(id, input as any)
 
       set((state) => ({
         incidents: state.incidents.map((incident) =>

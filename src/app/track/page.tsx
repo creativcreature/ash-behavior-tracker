@@ -12,8 +12,8 @@ import { Button } from '@/components/ui/button'
 export default function TrackPage() {
   const router = useRouter()
   const { selectedChildId, children, fetchChildren } = useChildrenStore()
-  const [selectedBehaviorType, setSelectedBehaviorType] = useState<BehaviorType | null>(
-    null
+  const [selectedBehaviorType, setSelectedBehaviorType] = useState<BehaviorType | undefined>(
+    undefined
   )
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export default function TrackPage() {
   }
 
   const handleBehaviorLogged = () => {
-    setSelectedBehaviorType(null)
+    setSelectedBehaviorType(undefined)
     // Could show a success toast here
   }
 
@@ -83,7 +83,7 @@ export default function TrackPage() {
             childId={selectedChildId}
             initialBehaviorType={selectedBehaviorType}
             onSuccess={handleBehaviorLogged}
-            onCancel={() => setSelectedBehaviorType(null)}
+            onCancel={() => setSelectedBehaviorType(undefined)}
           />
         </div>
       )}

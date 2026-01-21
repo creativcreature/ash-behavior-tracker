@@ -37,8 +37,8 @@ const behaviorFormSchema = z.object({
     'other',
   ]),
   behavior: z.string().min(1, 'Behavior description is required'),
-  antecedent: z.string().min(1, 'Antecedent is required in full mode'),
-  consequence: z.string().min(1, 'Consequence is required in full mode'),
+  antecedent: z.string().optional(),
+  consequence: z.string().optional(),
   timestamp: z.string().optional(),
   intensity: z.number().min(1).max(5).optional(),
   duration: z.number().min(0).optional(),
@@ -74,14 +74,7 @@ export function ABCEntryForm({
   )
 
   const form = useForm<BehaviorFormValues>({
-    resolver: zodResolver(
-      isFullMode
-        ? behaviorFormSchema
-        : behaviorFormSchema.partial({
-            antecedent: true,
-            consequence: true,
-          })
-    ),
+    resolver: zodResolver(behaviorFormSchema),
     defaultValues: {
       behaviorType: initialBehaviorType || 'aggression',
       behavior: '',

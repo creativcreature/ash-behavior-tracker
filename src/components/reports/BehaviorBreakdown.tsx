@@ -100,8 +100,8 @@ export function BehaviorBreakdown({
                 border: '1px solid hsl(var(--border))',
                 borderRadius: '6px',
               }}
-              formatter={(value: number, name: string, props: any) => [
-                `${value} (${props.payload.percentage}%)`,
+              formatter={(value: any, name: any, props: any) => [
+                `${value || 0} (${props.payload.percentage}%)`,
                 'Count',
               ]}
             />
